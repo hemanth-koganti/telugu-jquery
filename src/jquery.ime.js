@@ -234,8 +234,8 @@
 					if ( rule.length === 3 ) {
 						if ( new RegExp( rule[ 1 ] + '$' ).test( context ) ) {
 							// if input[0] is a
-							if ( input[0] === "్" ){
-								return { noop: false, output: replacement };
+							if ( input[0] === "అ" ){
+								return { noop: false, output:  replacement };
 							}
 							// replacement = "్" + replacement;
 							for ( l = 0; l < consopatterns.length; l++){
@@ -247,15 +247,17 @@
 							return { noop: false, output: input.replace( regex, replacement ) };
 						}
 					} else {
+
+						if ( input[0] === "అ" ){
+							return { noop: false, output: replacement };
+						}
 						// replacement = "్" + replacement;
 						for ( l = 0; l < consopatterns.length; l++){
 							if ( input[0] === consopatterns[l][1] && consonants.indexOf(rule[0]) !== -1 ){
 								replacement = "్" + replacement;
 							}
 						}
-						if ( input[0] === "్" ){
-							return { noop: false, output:"్" + replacement };
-						}
+						
 						// replace
 						return { noop: false, output: input.replace( regex, replacement ) };
 					}
@@ -348,6 +350,7 @@
 			if ( replacement.noop ) {
 				return true;
 			}
+			debug(this.textEntry);
 
 			this.textEntry.replaceTextAtSelection( input.length, replacement.output );
 			debug("input:");
