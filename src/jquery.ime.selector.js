@@ -429,6 +429,8 @@
 			this.prepareInputMethods( languageCode );
 			this.hide();
 			// And select the default inputmethod
+			console.log(languageCode);
+			console.log("kjashd askdjhaskdjashkdjahsdk ajshd")
 			ime.setLanguage( languageCode );
 			this.inputmethod = null;
 			this.selectIM( $.ime.preferences.getIM( languageCode ) );
@@ -484,6 +486,8 @@
 		 * @param {string} inputmethodId
 		 */
 		selectIM: function ( inputmethodId ) {
+			console.log(inputmethodId);
+			console.log("asdasdadasdasdasdadasdalskdjalksjdlaksjdlaskjd")
 			var imeselector = this,
 				ime;
 

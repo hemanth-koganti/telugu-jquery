@@ -8,7 +8,7 @@
 			previousLanguages: [], // array of previous languages
 			previousInputMethods: [], // array of previous inputmethods
 			imes: {
-				en: 'system'
+				te: 'te-inscript2'
 			}
 		},
 
@@ -36,7 +36,7 @@
 		},
 
 		getDefaultLanguage: function () {
-			return 'en';
+			return 'te';
 		},
 
 		getPreviousLanguages: function () {
