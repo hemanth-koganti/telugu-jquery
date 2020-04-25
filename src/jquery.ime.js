@@ -165,6 +165,66 @@
 			var temp3;
 			var consopatterns = [];
 			var consonants = ["k","K","i","I","5",";",":","p","P","\\}","\\'","\"","\\[","\\{","C","l","L","o","O","v","h","H","y","Y","c","/","j","J","n","N","b","M","\\<","m","u"];
+			var vowelPatterns = [];
+			var vowels = ["D", "E", "F", "R", "G", "T", "Z", "S", "W", "A", "Q", "\\+", "\\_"];
+			var polluPatterns = [];
+			var pollu = ["d","e","f","r","g","t","z","s","w","a","q","\\=","\\-"];
+			var symbols = ["{","}","[","<"];
+			var js = {
+				"D": {
+					0 : "్",
+					1 : "అ"
+				},
+				"E": {
+					0 : "ా",
+					1 : "ఆ"
+				},
+				"F": {
+					0 : "ి",
+					1 : "ఇ"
+				},
+				"R": {
+					0 : "ీ",
+					1 : "ఈ"
+				},
+				"G": {
+					0 : "ు",
+					1 : "ఉ"
+				},
+				"T": {
+					0 : "ూ",
+					1 : "ఊ"
+				},
+				"Z": {
+					0 : "ె",
+					1 : "ఎ"
+				},
+				"S": {
+					0 : "ే",
+					1 : "ఏ"
+				},
+				"W": {
+					0 : "ై",
+					1 : "ఐ"
+				},
+				"A": {
+					0 : "ో",
+					1 : "ఓ"
+				},
+				"Q": {
+					0 : "ౌ",
+					1 : "ఔ"
+				},
+				"+": {
+					0 : "ృ",
+					1 : "ఋ"
+				},
+				"_": {
+					0 : "ః",
+					1 : "-"
+				}
+			}
+
 			debug("inside transliterate");
 			debug(input[0]);
 			if ( altGr ) {
@@ -203,8 +263,17 @@
 					}
 				}
 			}
+			for ( j = 0; j < vowels.length; j++) {
+				for (k = 0; k< patterns.length; k++){
+					if(vowels[j] === patterns[k][0]){
+						vowelPatterns.push(patterns[k]);
+					}
+				}
+			}
 			debug(consopatterns);
-			console.log(consopatterns);
+			debug(vowelPatterns);
+			debug(polluPatterns);
+
 
 			for ( i = 0; i < patterns.length; i++ ) {
 
@@ -234,6 +303,11 @@
 					if ( rule.length === 3 ) {
 						if ( new RegExp( rule[ 1 ] + '$' ).test( context ) ) {
 							// if input[0] is a
+
+							if ( input[0] === "్" && vowels.indexOf(rule[0]) ){
+								debug("lklkasdjlaksjdlkjsaldkjaslkdjalkdjslkdjlaksjdalskdajldskjasld");
+							}
+
 							if ( input[0] === "అ" ){
 								return { noop: false, output:  replacement };
 							}
@@ -247,19 +321,52 @@
 							return { noop: false, output: input.replace( regex, replacement ) };
 						}
 					} else {
-
-						if ( input[0] === "అ" ){
-							return { noop: false, output: replacement };
-						}
-						// replacement = "్" + replacement;
-						for ( l = 0; l < consopatterns.length; l++){
-							if ( input[0] === consopatterns[l][1] && consonants.indexOf(rule[0]) !== -1 ){
-								replacement = "్" + replacement;
+						debug("labalabalbalabalbalabalabalabalaba");
+						if ( vowels.indexOf(rule[0]) !== -1 ){
+							
+							if(input[0] === "్"){
+								if (rule[0] === "D" ){
+									return { noop: false, output: "" };
+								}
+								else {
+									return { noop: false, output: js[rule[0]][0] };
+								}
 							}
+															
 						}
+						if( consonants.indexOf(input[0]) !== -1 ){
+							return { noop: false, output: replacement + "్" };
+						}
+						if( symbols.indexOf(input[0]) !== -1) {
+							return { noop: false, output: replacement + "్" };
+						}
+						if( consonants.indexOf(rule[0]) !== -1 ){
+							if (input[0] === "్" ){
+								return { noop: false, output: "్" + replacement + "్" };
+							}
+							else{
+								replacement = replacement + "్";;
+								return { noop: false, output: input.replace( regex, replacement ) }
+							}
+							
+						}
+						if ( (input.length === 1|| input[0] === "" || input[0] === " ") && vowels.indexOf(rule[0]) !== -1 ){
+							replacement = js[rule[0]][1];
+							return { noop: false, output: input.replace( regex, replacement ) };
+						}
+
+						// if ( input[0] === "అ" ){
+						// 	return { noop: false, output: replacement };
+						// }
+						// replacement = "్" + replacement;
+						// for ( l = 0; l < consopatterns.length; l++){
+						// 	if ( input[0] === consopatterns[l][1] && consonants.indexOf(rule[0]) !== -1 ){
+						// 		replacement = "్" + replacement;
+						// 	}
+						// }
 						
 						// replace
-						return { noop: false, output: input.replace( regex, replacement ) };
+						// return { noop: false, output: input.replace( regex, replacement ) };
 					}
 				}
 			}
